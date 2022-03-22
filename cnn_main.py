@@ -9,7 +9,7 @@ detector = dlib.get_frontal_face_detector()  				#dlib's face detector (uses HOG
 predictor = dlib.shape_predictor('facial_landmarks.dat')	#dlib's pretrained model to recognise facial features (uses regression trees)
 model = load_model('drowsyv3.hd5')							#Trained model for predicting state of the eyes
 setgpio()
-BUFFER = 11
+BUFFER = 5
 
 def cnn_calculate(image, closed, counter,results):
 	image = resize(image, width=500)
