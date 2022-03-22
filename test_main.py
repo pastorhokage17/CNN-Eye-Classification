@@ -47,10 +47,10 @@ def main():
                 right_eye_cnn = reshape_eye(gray, eye_points=right_eye_ear)
                 left_eye_cnn = reshape_eye(gray, eye_points=left_eye_ear)
                 eye_state_cnn = predict(model,left_eye_cnn,right_eye_cnn) #output: "open" / "close"
-
+                
                 if eye_state_cnn == "close":
                     cef += 1
-            
+                logging.info(" -- eye_state_cnn: {}".format(eye_state_cnn))
             if j == BUFFER-1: #buffer full
                 if cef >= 5:
                     cef = 0
@@ -59,12 +59,12 @@ def main():
                 else:
                     d_state = "neutral"
         t_end = time.process_time() - t_start
-        logging.info(" -- Driver state: ({}), time elapsed: {:.2f}".format(d_state,t_end))
+        logging.info(" -- Driver state: ({}), closed-eye frames: {}, time elapsed: {:.2f}".format(d_state,cef,t_end))
         logging.info(" -- current mean frames/second proccesed: {:.2f}/s".format(BUFFER/t_end))
 
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+#         if cv2.waitKey(1) & 0xFF == ord('q'):
+#             break
 
 
 
