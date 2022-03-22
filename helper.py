@@ -119,10 +119,12 @@ def setgpio():
     GPIO.output(12,GPIO.LOW) #no ring when low
 
 def ring():
-    GPIO.output(12,GPIO.HIGH)
-    time.sleep(0.2)
-    GPIO.output(12,GPIO.LOW)
-    time.sleep(0.2)
-    GPIO.output(12,GPIO.HIGH)
-    time.sleep(0.2)
-    GPIO.output(12,GPIO.LOW)
+    for i in range(4):
+        GPIO.output(12,GPIO.HIGH)
+        time.sleep(0.2)
+        GPIO.output(12,GPIO.LOW)
+        time.sleep(0.2)
+        GPIO.output(12,GPIO.HIGH)
+        time.sleep(0.2)
+        GPIO.output(12,GPIO.LOW)
+        time.sleep(0.12)

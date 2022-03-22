@@ -55,7 +55,7 @@ def main():
                     if cef >= 5:
                         cef = 0
                         d_state = "innatentive"
-                        # ring()
+                        ring()
                     else:
                         d_state = "neutral"
             t_end = time.process_time() - t_start
@@ -68,7 +68,6 @@ def main():
         cam.release()
         logging.info(' -- Interrupted. Closing Program Gracefully...')
         time.sleep(0.5)
-        
 #         if cv2.waitKey(1) & 0xFF == ord('q'):
 #             break
 
