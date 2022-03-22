@@ -1,8 +1,15 @@
 import cv2
-import numpy as np
 import math
+import logging
+import time
+import RPi.GPIO as GPIO
+import numpy as np
 
+
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s:%(levelname)s:%(message)s')
 IMG_SIZE = (24,24)
+
 
 def resize(image, width=None, height=None, inter=cv2.INTER_AREA):
 	dim = None
@@ -71,3 +78,52 @@ def distance(a,b):
 	x1,y1=a
 	x2,y2=b
 	return math.sqrt((abs(x1-x2)**2)+(abs(y1-y2)**2))
+
+def gstreamer_pipeline(
+    capture_width=1640,
+    capture_height=1232,
+    display_width=820,
+    display_height=616,
+    framerate=30,
+    flip_method=0,
+):
+    return (
+        "nvarguscamerasrc ! "
+        "video/x-raw(memory:NVMM), "
+        "width=(int)%d, height=(int)%d, "
+        "format=(string)NV12, framerate=(fraction)%d/1 ! "
+        "nvvidconv flip-method=%d ! "
+        "video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! "
+        "videoconvert ! "
+        "video/x-raw, format=(string)BGR ! appsink"
+        % (
+            capture_width,
+            capture_height,
+            framerate,
+            flip_method,
+            display_width,
+            display_height,
+        )
+    )
+
+
+def message(fps, faces, eyestate, a, b):
+    logging.info('FPS: {}, Faces: {}, Eye State: {}, Buffer: {}/{}'.format(fps, faces, eyestate,a,b))
+    #logging.info('FPS: {}, Faces: {}, Eye State: {}, Buffer: {}/{}'.format(fps, len(faces), state, closed, BUFFER))
+    
+
+def setgpio():
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(12,GPIO.OUT)
+    GPIO.output(12,GPIO.HIGH) #no ring when high
+
+def ring():
+    GPIO.output(12,GPIO.LOW)
+    time.sleep(0.2)
+    GPIO.output(12,GPIO.HIGH)
+    time.sleep(0.2)
+    GPIO.output(12,GPIO.LOW)
+    time.sleep(0.2)
+    GPIO.output(12,GPIO.HIGH)
+
