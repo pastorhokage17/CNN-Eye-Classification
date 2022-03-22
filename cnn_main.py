@@ -5,6 +5,7 @@ import dlib
 import logging
 from ear_calculate import *
 from cnn import *
+import time
 BUFFER = 8
 
 def cnn_calculate(image, closed, counter,results):
@@ -22,7 +23,7 @@ def cnn_calculate(image, closed, counter,results):
 		right_eye_cnn = reshape_eye(gray, eye_points=right_eye_ear)
 		left_eye_cnn = reshape_eye(gray, eye_points=left_eye_ear)
 		eye_state_cnn = predict(model,left_eye_cnn,right_eye_cnn)
-		if eyestate(eye_state_cnn) == "close":
+		if eye_state_cnn == "close":
 			closed += 1
 	if results[1] == None:
 		if len(faces) == 1:
@@ -31,9 +32,6 @@ def cnn_calculate(image, closed, counter,results):
 			state = "N/A"		
 	else:
 		state = results[1]
-		
-	if state == "innatentive":
-		ring()
 		
 	if counter == BUFFER-1: #if and only if buffer is full, then update state 
 		if len(faces) == 0:
@@ -68,7 +66,7 @@ if cam.isOpened():
 	try:
 		while True:
 			results[2] = 0
-		# k = 0		#counter knina
+			t_start = time.process_time()
 			for j in range(BUFFER):
 				ret,image = cam.read()
 				try:
@@ -89,6 +87,8 @@ if cam.isOpened():
 							threads[l].join()
 				except:
 					logging.info('No Image/Faces found.')
+			t_end = time.process_time() - t_start
+			logging.info(" -- current mean frames/second proccesed: {:.2f}/s".format(BUFFER/t_end))
 	finally:
 		cam.release()
 		logging.info('Interrupted. Closing Program...')
