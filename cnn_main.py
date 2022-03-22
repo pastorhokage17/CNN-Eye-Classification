@@ -4,12 +4,7 @@ from helper import *
 import dlib
 from ear_calculate import *
 from cnn import *
-
-detector = dlib.get_frontal_face_detector()  				#dlib's face detector (uses HOG)
-predictor = dlib.shape_predictor('facial_landmarks.dat')	#dlib's pretrained model to recognise facial features (uses regression trees)
-model = load_model('drowsyv3.hd5')							#Trained model for predicting state of the eyes
-setgpio()
-BUFFER = 5
+BUFFER = 8
 
 def cnn_calculate(image, closed, counter,results):
 	image = resize(image, width=500)
@@ -42,7 +37,7 @@ def cnn_calculate(image, closed, counter,results):
 	if counter == BUFFER-1: #if and only if buffer is full, then update state 
 		if len(faces) == 0:
 			state = "N/A"
-		elif closed >= 8:
+		elif closed >= 5:
 			closed = 0
 			state = "innatentive"
 			ring()
@@ -53,6 +48,16 @@ def cnn_calculate(image, closed, counter,results):
 	results[2] = closed
 
 
+
+console.log("Setting up dependencies...")
+detector = dlib.get_frontal_face_detector()  				#dlib's face detector (uses HOG)
+predictor = dlib.shape_predictor('facial_landmarks.dat')	#dlib's pretrained model to recognise facial features (uses regression trees)
+console.log("Loading trained model...")
+model = load_model('drowsyv3.hd5')							#Trained model for predicting state of the eyes
+console.log("Setting up Jetson GPIO...")
+setgpio()
+
+console.log("Opening camera...")
 cam=cv2.VideoCapture(gstreamer_pipeline(flip_method=6), cv2.CAP_GSTREAMER)
 fps = cam.get(cv2.CAP_PROP_FPS)
 if cam.isOpened():
