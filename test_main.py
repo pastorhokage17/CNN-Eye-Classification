@@ -13,11 +13,11 @@ BUFFER = 8
 
 def main():
     logging.info("[{}] -- Setting up dependencies ...".format(datetime.datetime.now()))
-    detector = dlib.get_frontal_face_detector()  				#dlib's face detector (uses HOG)
-    predictor = dlib.shape_predictor('facial_landmarks.dat')	#dlib's pretrained model to recognise facial features (uses regression trees)
+    detector = dlib.get_frontal_face_detector()                  #dlib's face detector (uses HOG)
+    predictor = dlib.shape_predictor('facial_landmarks.dat')    #dlib's pretrained model to recognise facial features (uses regression trees)
     #--------------------------------------------------------
     logging.info("[{}] -- Loading trained model ...".format(datetime.datetime.now()))
-    model = load_model('drowsyv3.hd5')							#Trained model for predicting state of the eyes
+    model = load_model('drowsyv3.hd5')                            #Trained model for predicting state of the eyes
     #--------------------------------------------------------
     logging.info("[{}] -- Setting up GPIO board ...".format(datetime.datetime.now()))
     setgpio() #uncomment for jetson nano
@@ -36,7 +36,7 @@ def main():
                 ret,image = cam.read()
                 image = resize(image, width=500)
                 cnn_image=image.copy()
-                gray = cv2.cvtColor(cnn_image, cv2.COLOR_BGR2GRAY)				#Gray input for CNN
+                gray = cv2.cvtColor(cnn_image, cv2.COLOR_BGR2GRAY)                #Gray input for CNN
                 brighter_image = increase_brightness(image)
                 equalized_image = histogram_equalization(brighter_image)
                 faces = detector(equalized_image, 1)
@@ -72,3 +72,13 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+if j == BUFFER-1:
+    threads[1] = Thread(target = message, args=(fps, results[0], results[1], results[2], BUFFER))
+    threads[1].start()
+                            for l in range(len(threads)):
+                                threads[l].join()
+                        else:
+                            threads[0].join()
+
