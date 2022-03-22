@@ -35,7 +35,10 @@ def cnn_calculate(image, closed, counter,results):
 			state = "N/A"		
 	else:
 		state = results[1]
-
+		
+	if state == "innatentive":
+		ring()
+		
 	if counter == BUFFER-1: #if and only if buffer is full, then update state 
 		if len(faces) == 0:
 			state = "N/A"
