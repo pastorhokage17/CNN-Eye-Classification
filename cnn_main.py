@@ -2,6 +2,7 @@
 from threading import Thread
 from helper import *
 import dlib
+import logging
 from ear_calculate import *
 from cnn import *
 BUFFER = 8
