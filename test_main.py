@@ -23,8 +23,9 @@ def main():
     setgpio() #uncomment for jetson nano
     #--------------------------------------------------------
     logging.info("[{}] -- Opening camera ...".format(datetime.datetime.now()))
-    cam=cv2.VideoCapture(0)
-
+    #cam=cv2.VideoCapture(0)
+    
+    cam=cv2.VideoCapture(gstreamer_pipeline(flip_method=6), cv2.CAP_GSTREAMER)
     while True:
         cef = 0 # cef - closed eye frames
         f = 0
