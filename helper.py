@@ -116,14 +116,14 @@ def setgpio():
     GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(12,GPIO.OUT)
-    GPIO.output(12,GPIO.HIGH) #no ring when high
+    GPIO.output(12,GPIO.LOW) #no ring when low
 
 def ring():
-    GPIO.output(12,GPIO.LOW)
-    time.sleep(0.2)
     GPIO.output(12,GPIO.HIGH)
     time.sleep(0.2)
     GPIO.output(12,GPIO.LOW)
     time.sleep(0.2)
     GPIO.output(12,GPIO.HIGH)
+    time.sleep(0.2)
+    GPIO.output(12,GPIO.LOW)
 
