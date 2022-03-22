@@ -50,7 +50,6 @@ def main():
 
                     if eye_state_cnn == "close":
                         cef += 1
-                    logging.info(" -- eye_state_cnn: {}".format(eye_state_cnn))
                 if j == BUFFER-1: #buffer full
                     if cef >= 5:
                         cef = 0
