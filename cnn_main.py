@@ -78,14 +78,14 @@ if cam.isOpened():
 						# k += 1			
 
 					else:
-						cnn_calculate(image,results[2],j,results)
-						message(fps, results[0], results[1], results[2], BUFFER)
-						# threads[0] = Thread(target = cnn_calculate, args=(image,results[2],j,results))
-						# threads[0].start()
-						# threads[1] = Thread(target = message, args=(fps, results[0], results[1], results[2], BUFFER))
-						# threads[1].start()
-						# for l in range(len(threads)):
-						# 	threads[l].join()
+						#cnn_calculate(image,results[2],j,results)
+						#message(fps, results[0], results[1], results[2], BUFFER)
+						threads[0] = Thread(target = cnn_calculate, args=(image,results[2],j,results))
+						threads[0].start()
+						threads[1] = Thread(target = message, args=(fps, results[0], results[1], results[2], BUFFER))
+						threads[1].start()
+						for l in range(len(threads)):
+							threads[l].join()
 				except:
 					logging.info('No Image/Faces found.')
 	finally:
