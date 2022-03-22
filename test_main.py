@@ -26,48 +26,51 @@ def main():
     #cam=cv2.VideoCapture(0)
     
     cam=cv2.VideoCapture(gstreamer_pipeline(flip_method=6), cv2.CAP_GSTREAMER)
-    while True:
-        cef = 0 # cef - closed eye frames
-        f = 0
-        d_state = "n/a"
-        t_start = time.process_time()
-        for j in range(BUFFER):
-            
-            ret,image = cam.read()
-            image = resize(image, width=500)
-            cnn_image=image.copy()
-            gray = cv2.cvtColor(cnn_image, cv2.COLOR_BGR2GRAY)				#Gray input for CNN
-            brighter_image = increase_brightness(image)
-            equalized_image = histogram_equalization(brighter_image)
-            faces = detector(equalized_image, 1)
-            for (i, face) in enumerate(faces):
-                facial_features = predictor(equalized_image, face)
-                facial_features = shape_to_np(facial_features)
-                left_eye_ear,right_eye_ear = get_eyes(facial_features) #Just for drawing
-                right_eye_cnn = reshape_eye(gray, eye_points=right_eye_ear)
-                left_eye_cnn = reshape_eye(gray, eye_points=left_eye_ear)
-                eye_state_cnn = predict(model,left_eye_cnn,right_eye_cnn) #output: "open" / "close"
-                
-                if eye_state_cnn <=0.02:
-                    cef += 1
-                logging.info(" -- eye_state_cnn: {}".format(eye_state_cnn))
-            if j == BUFFER-1: #buffer full
-                if cef >= 5:
-                    cef = 0
-                    d_state = "innatentive"
-                    # ring()
-                else:
-                    d_state = "neutral"
-        t_end = time.process_time() - t_start
-        logging.info(" -- Driver state: ({}), closed-eye frames: {}, time elapsed: {:.2f}".format(d_state,cef,t_end))
-        logging.info(" -- current mean frames/second proccesed: {:.2f}/s".format(BUFFER/t_end))
+    try:
+        while True:
+            cef = 0 # cef - closed eye frames
+            f = 0
+            d_state = "n/a"
+            t_start = time.process_time()
+            for j in range(BUFFER):       
+                ret,image = cam.read()
+                image = resize(image, width=500)
+                cnn_image=image.copy()
+                gray = cv2.cvtColor(cnn_image, cv2.COLOR_BGR2GRAY)				#Gray input for CNN
+                brighter_image = increase_brightness(image)
+                equalized_image = histogram_equalization(brighter_image)
+                faces = detector(equalized_image, 1)
+                for (i, face) in enumerate(faces):
+                    facial_features = predictor(equalized_image, face)
+                    facial_features = shape_to_np(facial_features)
+                    left_eye_ear,right_eye_ear = get_eyes(facial_features) #Just for drawing
+                    right_eye_cnn = reshape_eye(gray, eye_points=right_eye_ear)
+                    left_eye_cnn = reshape_eye(gray, eye_points=left_eye_ear)
+                    eye_state_cnn = predict(model,left_eye_cnn,right_eye_cnn) #output: "open" / "close"
 
+                    if eye_state_cnn == "close":
+                        cef += 1
+                    logging.info(" -- eye_state_cnn: {}".format(eye_state_cnn))
+                if j == BUFFER-1: #buffer full
+                    if cef >= 5:
+                        cef = 0
+                        d_state = "innatentive"
+                        # ring()
+                    else:
+                        d_state = "neutral"
+            t_end = time.process_time() - t_start
+            logging.info(" -- Driver state: ({}), closed-eye frames: {}, time elapsed: {:.2f}".format(d_state,cef,t_end))
+            logging.info(" -- current mean frames/second proccesed: {:.2f}/s".format(BUFFER/t_end))
 
+    except:
+        logging.warning("Exception found. Try to restart device")
+    finally:
+        cam.release()
+        logging.info(' -- Interrupted. Closing Program Gracefully...')
+        time.sleep(0.5)
+        
 #         if cv2.waitKey(1) & 0xFF == ord('q'):
 #             break
-
-
-
 
 if __name__ == "__main__":
     main()

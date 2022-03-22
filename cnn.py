@@ -11,10 +11,10 @@ def predict(model,left_eye,right_eye):
 
     prediction=(left_eye_prediction+right_eye_prediction)/2.0
 
-    # if prediction>0.5:
-    #     prediction="open"
-    # else:
-    #     prediction="close"
+    if prediction>0.5:
+        prediction="open"
+    else:
+        prediction="close"
     
     return prediction
 
