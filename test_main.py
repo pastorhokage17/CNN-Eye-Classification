@@ -48,7 +48,7 @@ def main():
                 left_eye_cnn = reshape_eye(gray, eye_points=left_eye_ear)
                 eye_state_cnn = predict(model,left_eye_cnn,right_eye_cnn) #output: "open" / "close"
                 
-                if eye_state_cnn == "close":
+                if eye_state_cnn <=0.01:
                     cef += 1
                 logging.info(" -- eye_state_cnn: {}".format(eye_state_cnn))
             if j == BUFFER-1: #buffer full
