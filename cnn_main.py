@@ -50,15 +50,15 @@ def cnn_calculate(image, closed, counter,results):
 
 
 
-console.log("Setting up dependencies...")
+logging.info("Setting up dependencies...")
 detector = dlib.get_frontal_face_detector()  				#dlib's face detector (uses HOG)
 predictor = dlib.shape_predictor('facial_landmarks.dat')	#dlib's pretrained model to recognise facial features (uses regression trees)
-console.log("Loading trained model...")
+logging.info("Loading trained model...")
 model = load_model('drowsyv3.hd5')							#Trained model for predicting state of the eyes
-console.log("Setting up Jetson GPIO...")
+logging.info("Setting up Jetson GPIO...")
 setgpio()
 
-console.log("Opening camera...")
+logging.info("Opening camera...")
 cam=cv2.VideoCapture(gstreamer_pipeline(flip_method=6), cv2.CAP_GSTREAMER)
 fps = cam.get(cv2.CAP_PROP_FPS)
 if cam.isOpened():
