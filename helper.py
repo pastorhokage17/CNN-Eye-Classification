@@ -127,3 +127,6 @@ def ring():
     time.sleep(0.2)
     GPIO.output(12,GPIO.LOW)
 
+###
+### malaking hungarian ni miggy boy
+###
