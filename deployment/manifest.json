@@ -6,7 +6,7 @@
                     "eye-state-analyzer": {
                         "settings": {
                             "image": "crus012/jetpackbase:latest",
-                            "createOptions": ""
+                            "createOptions": "{\"HostConfig\":{\"Privileged\":true},\"Volumes\":\"/tmp/argus_socket:/tmp/argus_socket\",\"Runtime\":\"nvidia\"}"
                         },
                         "type": "docker",
                         "status": "running",
