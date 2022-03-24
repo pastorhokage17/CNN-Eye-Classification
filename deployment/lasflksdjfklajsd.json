@@ -1,0 +1,74 @@
+{
+    "content": {
+        "modulesContent": {
+            "$edgeAgent": {
+                "properties.desired": {
+                    "modules": {
+                        "eye-state-analyzer": {
+                            "settings": {
+                                "image": "crus012/jetpackbase:latest",
+                                "createOptions": ""
+                            },
+                            "type": "docker",
+                            "status": "running",
+                            "restartPolicy": "always",
+                            "version": "1.0"
+                        }
+                    },
+                    "runtime": {
+                        "settings": {
+                            "minDockerVersion": "v1.25"
+                        },
+                        "type": "docker"
+                    },
+                    "schemaVersion": "1.1",
+                    "systemModules": {
+                        "edgeAgent": {
+                            "settings": {
+                                "image": "mcr.microsoft.com/azureiotedge-agent:1.1",
+                                "createOptions": ""
+                            },
+                            "type": "docker"
+                        },
+                        "edgeHub": {
+                            "settings": {
+                                "image": "mcr.microsoft.com/azureiotedge-hub:1.1",
+                                "createOptions": "{\"HostConfig\":{\"PortBindings\":{\"443/tcp\":[{\"HostPort\":\"443\"}],\"5671/tcp\":[{\"HostPort\":\"5671\"}],\"8883/tcp\":[{\"HostPort\":\"8883\"}]}}}"
+                            },
+                            "type": "docker",
+                            "status": "running",
+                            "restartPolicy": "always"
+                        }
+                    }
+                }
+            },
+            "$edgeHub": {
+                "properties.desired": {
+                    "routes": {},
+                    "schemaVersion": "1.1",
+                    "storeAndForwardConfiguration": {
+                        "timeToLiveSecs": 7200
+                    }
+                }
+            }
+        }
+    },
+    "createdTimeUtc": "2022-03-24T15:35:09.190Z",
+    "etag": "MQ==",
+    "id": "lasflksdjfklajsd",
+    "labels": {},
+    "lastUpdatedTimeUtc": "2022-03-24T15:35:09.190Z",
+    "metrics": {
+        "results": {},
+        "queries": {}
+    },
+    "systemMetrics": {
+        "results": {},
+        "queries": {
+            "targetedCount": "",
+            "appliedCount": "select deviceId from devices.modules where moduleId = '$edgeAgent' and configurations.[[lasflksdjfklajsd]].status = 'Applied'",
+            "reportedSuccessfulCount": "select deviceId from devices.modules where moduleId = '$edgeAgent' and configurations.[[lasflksdjfklajsd]].status = 'Applied' and properties.desired.$version = properties.reported.lastDesiredVersion and properties.reported.lastDesiredStatus.code = 200",
+            "reportedFailedCount": "select deviceId from devices.modules where moduleId = '$edgeAgent' and configurations.[[lasflksdjfklajsd]].status = 'Applied' and properties.desired.$version = properties.reported.lastDesiredVersion and properties.reported.lastDesiredStatus.code != 200"
+        }
+    }
+}
