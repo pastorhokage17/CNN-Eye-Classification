@@ -73,12 +73,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-if j == BUFFER-1:
-    threads[1] = Thread(target = message, args=(fps, results[0], results[1], results[2], BUFFER))
-    threads[1].start()
-                            for l in range(len(threads)):
-                                threads[l].join()
-                        else:
-                            threads[0].join()
-
