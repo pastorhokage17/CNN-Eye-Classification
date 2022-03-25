@@ -64,7 +64,8 @@ if cam.isOpened():
     results = [None]*3
     threads = [None]*2
     try:
-        while True:
+        run = True
+        while run:
             results[2] = 0
             t_start = time.process_time()
             for j in range(BUFFER):
@@ -85,7 +86,11 @@ if cam.isOpened():
                         else:
                             threads[0].join()
                 except:
-                    logging.info('No Image/Faces found.')
+                    logging.info("An exception has been thrown during runtime ...")
+                    run = False
+                    break
+            if not(run):
+                break    
             t_end = time.process_time() - t_start
             logging.info(" -- current mean frames/second proccesed: {:.2f}/s".format(BUFFER/t_end))
     finally:

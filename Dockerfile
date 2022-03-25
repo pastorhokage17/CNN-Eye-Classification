@@ -19,6 +19,6 @@ COPY . .
 
 RUN pip3 uninstall -y h5py && apt-get -y install python3-h5py
 
-RUN apt-get install git
+RUN apt-get install git -y
 
-CMD ["python3","cnn_main.py"]
+CMD ["python3","-u","cnn_main.py"]
