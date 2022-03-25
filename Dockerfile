@@ -15,10 +15,10 @@ RUN apt-get install -y unzip cmake \
     && cd dlib-19.22 \
     && python3 setup.py install --user
 
-COPY . .
-
 RUN pip3 uninstall -y h5py && apt-get -y install python3-h5py
 
 RUN apt-get install git -y
+
+COPY . .
 
 CMD ["python3","-u","cnn_main.py"]
