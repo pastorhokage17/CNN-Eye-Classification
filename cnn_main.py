@@ -57,8 +57,8 @@ logging.info("Setting up Jetson GPIO...")
 setgpio()
 
 logging.info("Opening camera...")
-# cam=cv2.VideoCapture(gstreamer_pipeline(flip_method=6), cv2.CAP_GSTREAMER)
-cam = cv2.VideoCapture(0)
+cam=cv2.VideoCapture(gstreamer_pipeline(flip_method=6), cv2.CAP_GSTREAMER)
+#cam = cv2.VideoCapture(0)
 fps = cam.get(cv2.CAP_PROP_FPS)
 if cam.isOpened():
     logging.info('Camera On...')
