@@ -2,7 +2,7 @@ import cv2
 import math
 import logging
 import time
-import RPi.GPIO as GPIO
+# import RPi.GPIO as GPIO
 import numpy as np
 
 
@@ -112,19 +112,19 @@ def message(fps, faces, eyestate, a, b):
     #logging.info('FPS: {}, Faces: {}, Eye State: {}, Buffer: {}/{}'.format(fps, len(faces), state, closed, BUFFER))
     
 
-def setgpio():
-    GPIO.setwarnings(False)
-    GPIO.setmode(GPIO.BOARD)
-    GPIO.setup(12,GPIO.OUT)
-    GPIO.output(12,GPIO.LOW) #no ring when low
+# def setgpio():
+#     GPIO.setwarnings(False)
+#     GPIO.setmode(GPIO.BOARD)
+#     GPIO.setup(12,GPIO.OUT)
+#     GPIO.output(12,GPIO.LOW) #no ring when low
 
-def ring():
-    for i in range(4):
-        GPIO.output(12,GPIO.HIGH)
-        time.sleep(0.2)
-        GPIO.output(12,GPIO.LOW)
-        time.sleep(0.2)
-        GPIO.output(12,GPIO.HIGH)
-        time.sleep(0.2)
-        GPIO.output(12,GPIO.LOW)
-        time.sleep(0.12)
+# def ring():
+#     for i in range(4):
+#         GPIO.output(12,GPIO.HIGH)
+#         time.sleep(0.2)
+#         GPIO.output(12,GPIO.LOW)
+#         time.sleep(0.2)
+#         GPIO.output(12,GPIO.HIGH)
+#         time.sleep(0.2)
+#         GPIO.output(12,GPIO.LOW)
+#         time.sleep(0.12)
