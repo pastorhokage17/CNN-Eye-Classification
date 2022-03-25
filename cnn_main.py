@@ -71,25 +71,26 @@ if cam.isOpened():
             t_start = time.process_time()
             for j in range(BUFFER):
                 ret,image = cam.read()
-                try:
-                    if results[1] == None:
+                if results[1] == None:
                         cnn_calculate(image,0,j,results)
                         message(fps, results[0], results[1], results[2], BUFFER)
                         
+                else:
+                    threads[0] = Thread(target = cnn_calculate, args=(image,results[2],j,results))
+                    threads[0].start()
+                    if j == BUFFER-1:
+                        threads[1] = Thread(target = message, args=(fps, results[0], results[1], results[2], BUFFER))
+                        threads[1].start()
+                        for l in range(len(threads)):
+                            threads[l].join()
                     else:
-                        threads[0] = Thread(target = cnn_calculate, args=(image,results[2],j,results))
-                        threads[0].start()
-                        if j == BUFFER-1:
-                            threads[1] = Thread(target = message, args=(fps, results[0], results[1], results[2], BUFFER))
-                            threads[1].start()
-                            for l in range(len(threads)):
-                                threads[l].join()
-                        else:
-                            threads[0].join()
-                except:
-                    logging.info("An exception has been thrown during runtime ...")
-                    run = False
-                    break
+                        threads[0].join()
+                # try:
+                    
+                # except:
+                #     logging.info("An exception has been thrown during runtime ...")
+                #     run = False
+                #     break
             if not(run):
                 break    
             t_end = time.process_time() - t_start
