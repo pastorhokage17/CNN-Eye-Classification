@@ -22,3 +22,9 @@ RUN apt-get install git -y
 COPY . .
 
 CMD ["python3","-u","cnn_main.py"]
+
+########################
+# imports
+# > dlib
+# > keras, nag eerror
+# > Jetson.GPIO
