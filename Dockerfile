@@ -17,6 +17,9 @@ RUN apt-get install -y unzip cmake \
 
 COPY . .
 
+RUN pip3 install -U setuptools pip protobuf==3.3.0 \
+    && pip3 install opencv-contrib-python-headless
+
 CMD ["python3","-u","cnn_main.py"]
 
 ########################################
