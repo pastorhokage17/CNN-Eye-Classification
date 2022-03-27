@@ -20,7 +20,7 @@ COPY . .
 # RUN pip3 install -U setuptools pip protobuf==3.3.0 \
 #     && pip3 install opencv-contrib-python-headless
 
-CMD ["python3","-u","cnn_main.py"]
+CMD ["/bin/bash"]
 
 ########################################
 ### -- crus012/jetpackbase:latest -- ###
