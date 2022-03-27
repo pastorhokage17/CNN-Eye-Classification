@@ -20,7 +20,7 @@ COPY . .
 # RUN pip3 install -U setuptools pip protobuf==3.3.0 \
 #     && pip3 install opencv-contrib-python-headless
 
-RUN pip3 install --no-dep opencv-python
+RUN pip3 install --no-dependencies opencv-python
 
 CMD ["/bin/bash"]
 

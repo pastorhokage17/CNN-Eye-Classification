@@ -101,7 +101,7 @@ if cam.isOpened():
 else:
     logging.warning('Camera not found using gstreamer.')
     logging.info('Attempting to use /dev/video0 ...')
-    cam = cv2.VideoCapture(0)
+    cam = cv2.VideoCapture(-1)
     fps = cam.get(cv2.CAP_PROP_FPS)
     if cam.isOpened():
         logging.info('Camera On...')
