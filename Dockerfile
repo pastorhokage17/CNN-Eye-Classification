@@ -59,11 +59,11 @@ RUN apt-get install git -y
 
 COPY . .
 
-CMD ["nvgstcapture-1.0"]
+# CMD ["nvgstcapture-1.0"]
 
 # CMD ["gst-launch-1.0", "nvarguscamerasrc", "!", "nvoverlaysink", "-e"]
 
-# CMD ["python3","-u","cnn_main.py"]
+CMD ["python3","-u","cnn_main.py"]
 
 ###########################################
 

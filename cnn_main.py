@@ -7,6 +7,7 @@ from ear_calculate import *
 from cnn import *
 import time
 BUFFER = 8
+TIME = 120
 
 def cnn_calculate(image, closed, counter,results):
     image = resize(image, width=500)
@@ -57,6 +58,9 @@ logging.info("Setting up Jetson GPIO...")
 setgpio()
 
 logging.info("Opening camera...")
+for i in range(TIME):
+    logging.info('Time left: {} secs'.format(TIME-i))
+    time.sleep(1)
 cam=cv2.VideoCapture(gstreamer_pipeline(flip_method=6), cv2.CAP_GSTREAMER)
 #cam = cv2.VideoCapture(0)
 fps = cam.get(cv2.CAP_PROP_FPS)
