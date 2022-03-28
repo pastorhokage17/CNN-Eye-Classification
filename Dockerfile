@@ -20,7 +20,17 @@ COPY . .
 # RUN pip3 install -U setuptools pip protobuf==3.3.0 \
 #     && pip3 install opencv-contrib-python-headless
 
-RUN pip3 install --no-dependencies opencv-python
+# RUN pip3 install --no-dependencies opencv-python
+
+RUN apt-get install -y libopencv-python \
+    && apt-get install -y --no-install-recommends \
+    build-essential \
+    zlib1g-dev \
+    zip \
+    libjpeg8-dev && rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install setuptools Cython wheel
+RUN pip3 install numpy --verbose
 
 CMD ["/bin/bash"]
 
