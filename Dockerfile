@@ -22,8 +22,7 @@ COPY . .
 
 # RUN pip3 install --no-dependencies opencv-python
 
-RUN apt-get install -y libopencv-python \
-    && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y libopencv-python && apt-get install -y --no-install-recommends \
     build-essential \
     zlib1g-dev \
     zip \
