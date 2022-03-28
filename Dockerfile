@@ -59,9 +59,9 @@ RUN apt-get install git -y
 
 COPY . .
 
-RUN gst-launch-1.0 nvarguscamerasrc ! nvoverlaysink -e
+CMD ["gst-launch-1.0", "nvarguscamerasrc", "!", "nvoverlaysink", "-e"]
 
-CMD ["python3","-u","cnn_main.py"]
+# CMD ["python3","-u","cnn_main.py"]
 
 ###########################################
 
