@@ -1,51 +1,11 @@
-FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf1.15-py3
-
-RUN apt-get update || apt-get install -y ca-certificates
-
-RUN apt-get update && apt-get install -y python3-pip python3-dev git
-
-RUN pip3 install --no-cache-dir --upgrade pip \
-    && pip3 --no-cache-dir install Jetson.GPIO 
-
-RUN apt-get install -y unzip cmake \
-    && wget https://github.com/davisking/dlib/archive/refs/tags/v19.22.zip \
-    && unzip v19.22 \
-    && cd dlib-19.22 \
-    && python3 setup.py install --user
-
-# RUN pip3 uninstall -y h5py && apt-get -y install python3-h5py
-
-COPY . .
-
-# RUN pip3 install -U setuptools pip protobuf==3.3.0 \
-#     && pip3 install opencv-contrib-python-headless
-
-# RUN pip3 install --no-dependencies opencv-python
-
-RUN apt-get update && apt-get install -y libopencv-dev && apt-get install -y --no-install-recommends \
-    build-essential \
-    zlib1g-dev \
-    zip \
-    libjpeg8-dev && rm -rf /var/lib/apt/lists/*
-
-RUN pip3 install setuptools Cython wheel
-RUN pip3 install numpy --verbose
-
-CMD ["/bin/bash"]
-
-########################################
-### -- crus012/jetpackbase:latest -- ###
-
-# FROM mdegans/tegra-opencv:latest
+# FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf1.15-py3
 
 # RUN apt-get update || apt-get install -y ca-certificates
 
-# RUN apt-get update && apt-get install -y python3-pip python3-dev
+# RUN apt-get update && apt-get install -y python3-pip python3-dev git
 
 # RUN pip3 install --no-cache-dir --upgrade pip \
-#     && pip3 --no-cache-dir install keras Jetson.GPIO \ 
-#     && pip install numpy==1.19.4 \
-#     && pip install --no-cache-dir tensorflow -f https://tf.kmtea.eu/whl/stable.html
+#     && pip3 --no-cache-dir install Jetson.GPIO 
 
 # RUN apt-get install -y unzip cmake \
 #     && wget https://github.com/davisking/dlib/archive/refs/tags/v19.22.zip \
@@ -53,13 +13,55 @@ CMD ["/bin/bash"]
 #     && cd dlib-19.22 \
 #     && python3 setup.py install --user
 
-# RUN pip3 uninstall -y h5py && apt-get -y install python3-h5py
-
-# RUN apt-get install git -y
+# # RUN pip3 uninstall -y h5py && apt-get -y install python3-h5py
 
 # COPY . .
 
-# CMD ["python3","-u","cnn_main.py"]
+# # RUN pip3 install -U setuptools pip protobuf==3.3.0 \
+# #     && pip3 install opencv-contrib-python-headless
+
+# # RUN pip3 install --no-dependencies opencv-python
+
+# RUN apt-get update && apt-get install -y libopencv-dev && apt-get install -y --no-install-recommends \
+#     build-essential \
+#     zlib1g-dev \
+#     zip \
+#     libjpeg8-dev && rm -rf /var/lib/apt/lists/*
+
+# RUN pip3 install setuptools Cython wheel
+# RUN pip3 install numpy --verbose
+
+# CMD ["/bin/bash"]
+
+########################################
+### -- crus012/jetpackbase:latest -- ###
+
+FROM mdegans/tegra-opencv:latest
+
+RUN apt-get update || apt-get install -y ca-certificates
+
+RUN apt-get update && apt-get install -y python3-pip python3-dev
+
+RUN pip3 install --no-cache-dir --upgrade pip \
+    && pip3 --no-cache-dir install keras Jetson.GPIO \ 
+    && pip install numpy==1.19.4 \
+    && pip install --no-cache-dir tensorflow -f https://tf.kmtea.eu/whl/stable.html
+
+RUN apt-get install -y unzip cmake \
+    && wget https://github.com/davisking/dlib/archive/refs/tags/v19.22.zip \
+    && unzip v19.22 \
+    && cd dlib-19.22 \
+    && python3 setup.py install --user
+
+RUN pip3 uninstall -y h5py && apt-get -y install python3-h5py
+
+RUN apt-get install git -y
+
+COPY . .
+
+RUN gst-launch-1.0 nvarguscamerasrc ! nvoverlaysink -e
+
+CMD ["python3","-u","cnn_main.py"]
 
 ###########################################
 
