@@ -67,7 +67,7 @@ COPY . .
 
 # CMD ["bin/bash"]
 
-CMD ["OPENBLAS_CORETYPE=AARCH64","python3","-u","cnn_main.py"]
+CMD ["python3","-u","cnn_main.py"]
 
 ###########################################
 
