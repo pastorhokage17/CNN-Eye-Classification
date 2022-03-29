@@ -61,11 +61,13 @@ COPY . .
 
 # CMD ["nvgstcapture-1.0"]
 
-CMD ["gst-launch-1.0", "nvarguscamerasrc", "!", "nvoverlaysink", "-e"]
+# CMD ["gst-launch-1.0", "nvarguscamerasrc", "!", "nvoverlaysink", "-e"]
 
 # ENTRYPOINT [ "systemctl","start","nvargus-daemon" ]
 
-# CMD ["python3","-u","cnn_main.py"]
+# CMD ["bin/bash"]
+
+CMD ["OPENBLAS_CORETYPE=AARCH64","python3","-u","cnn_main.py"]
 
 ###########################################
 

@@ -7,7 +7,7 @@ from ear_calculate import *
 from cnn import *
 import time
 BUFFER = 8
-TIME = 120
+TIME = 30
 
 def cnn_calculate(image, closed, counter,results):
     image = resize(image, width=500)
