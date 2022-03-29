@@ -63,6 +63,8 @@ COPY . .
 
 # CMD ["gst-launch-1.0", "nvarguscamerasrc", "!", "nvoverlaysink", "-e"]
 
+ENTRYPOINT [ "systemctl","start","nvargus-daemon" ]
+
 CMD ["python3","-u","cnn_main.py"]
 
 ###########################################
