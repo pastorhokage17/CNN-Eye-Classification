@@ -80,11 +80,11 @@ def distance(a,b):
     return math.sqrt((abs(x1-x2)**2)+(abs(y1-y2)**2))
 
 def gstreamer_pipeline(
-    capture_width=1280,
-    capture_height=720,
+    capture_width=3264,
+    capture_height=2464,
     display_width=820,
     display_height=616,
-    framerate=120,
+    framerate=21,
     flip_method=0,
 ):
     return (
