@@ -19,7 +19,6 @@ def cnn_calculate(image, closed, counter,results):
     for (i, face) in enumerate(faces):
         facial_features = predictor(equalized_image, face)
         facial_features = shape_to_np(facial_features)
-        ear=calculate_ear(facial_features)
         left_eye_ear,right_eye_ear = get_eyes(facial_features)
         right_eye_cnn = reshape_eye(gray, eye_points=right_eye_ear)
         left_eye_cnn = reshape_eye(gray, eye_points=left_eye_ear)
@@ -72,7 +71,7 @@ if cam.isOpened():
         run = True
         while run:
             results[2] = 0
-            t_start = time.process_time()
+            t_start = time.process_time() 
             for j in range(BUFFER):
                 ret,image = cam.read()
                 try:
