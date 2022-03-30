@@ -1,6 +1,31 @@
-# FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf1.15-py3
+########################################
+### -- crus012/cnneye-opencv-build:latest -- ###
+FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf1.15-py3
 
-# RUN apt-get update || apt-get install -y ca-certificates
+ARG OPENCV_VERSION="4.5.1"
+ARG OPENCV_DO_TEST="FALSE"
+# note: 8 jobs will fail on Nano. Try 1 instead.
+ARG OPENCV_BUILD_JOBS="1"
+# required for apt-get -y to work properly:
+ARG DEBIAN_FRONTEND=noninteractive
+
+WORKDIR /usr/local/src/build_opencv
+
+COPY build_opencv.sh .
+
+RUN /bin/bash build_opencv.sh
+
+
+# RUN apt-get purge libreoffice* && apt-get clean
+
+# RUN ap-get update && apt-get upgrade \
+#     apt-get install -y --
+
+# $ sudo apt-get install libfreetype6-dev python3-setuptools
+# $ sudo apt-get install protobuf-compiler libprotobuf-dev openssl
+# $ sudo apt-get install libssl-dev libcurl4-openssl-dev
+# $ sudo apt-get install cython3
+# # RUN apt-get update || apt-get install -y ca-certificates
 
 # RUN apt-get update && apt-get install -y python3-pip python3-dev git
 
@@ -13,61 +38,41 @@
 #     && cd dlib-19.22 \
 #     && python3 setup.py install --user
 
-# # RUN pip3 uninstall -y h5py && apt-get -y install python3-h5py
 
 # COPY . .
 
-# # RUN pip3 install -U setuptools pip protobuf==3.3.0 \
-# #     && pip3 install opencv-contrib-python-headless
-
-# # RUN pip3 install --no-dependencies opencv-python
-
-# RUN apt-get update && apt-get install -y libopencv-dev && apt-get install -y --no-install-recommends \
-#     build-essential \
-#     zlib1g-dev \
-#     zip \
-#     libjpeg8-dev && rm -rf /var/lib/apt/lists/*
 
 # RUN pip3 install setuptools Cython wheel
-# RUN pip3 install numpy --verbose
 
 # CMD ["/bin/bash"]
 
 ########################################
 ### -- crus012/jetpackbase:latest -- ###
 
-FROM mdegans/tegra-opencv:latest
+# FROM mdegans/tegra-opencv:latest
 
-RUN apt-get update || apt-get install -y ca-certificates
+# RUN apt-get update || apt-get install -y ca-certificates
 
-RUN apt-get update && apt-get install -y python3-pip python3-dev
+# RUN apt-get update && apt-get install -y python3-pip python3-dev
 
-RUN pip3 install --no-cache-dir --upgrade pip \
-    && pip3 --no-cache-dir install keras Jetson.GPIO \ 
-    && pip install numpy==1.19.4 \
-    && pip install --no-cache-dir tensorflow -f https://tf.kmtea.eu/whl/stable.html
+# RUN pip3 install --no-cache-dir --upgrade pip \
+#     && pip3 --no-cache-dir install keras Jetson.GPIO \ 
+#     && pip install numpy==1.19.4 \
+#     && pip install --no-cache-dir tensorflow -f https://tf.kmtea.eu/whl/stable.html
 
-RUN apt-get install -y unzip cmake \
-    && wget https://github.com/davisking/dlib/archive/refs/tags/v19.22.zip \
-    && unzip v19.22 \
-    && cd dlib-19.22 \
-    && python3 setup.py install --user
+# RUN apt-get install -y unzip cmake \
+#     && wget https://github.com/davisking/dlib/archive/refs/tags/v19.22.zip \
+#     && unzip v19.22 \
+#     && cd dlib-19.22 \
+#     && python3 setup.py install --user
 
-RUN pip3 uninstall -y h5py && apt-get -y install python3-h5py
+# RUN pip3 uninstall -y h5py && apt-get -y install python3-h5py
 
-RUN apt-get install git -y
+# RUN apt-get install git -y
 
-COPY . .
+# COPY . .
 
-# CMD ["nvgstcapture-1.0"]
-
-# CMD ["gst-launch-1.0", "nvarguscamerasrc", "!", "nvoverlaysink", "-e"]
-
-# ENTRYPOINT [ "systemctl","start","nvargus-daemon" ]
-
-# CMD ["bin/bash"]
-
-CMD ["python3","-u","cnn_main.py"]
+# CMD ["python3","-u","cnn_main.py"]
 
 ###########################################
 
