@@ -39,7 +39,7 @@ def cnn_calculate(image, closed, counter,results):
         elif closed >= 3: #60% OF BUFFER
             closed = 0
             state = "innatentive"
-            ring()
+            #ring()
         else:
             state = "attentive"
     results[0] = len(faces)
@@ -54,14 +54,14 @@ predictor = dlib.shape_predictor('facial_landmarks.dat')    #dlib's pretrained m
 logging.info("Loading trained model...")
 model = load_model('drowsyv3.hd5')                            #Trained model for predicting state of the eyes
 logging.info("Setting up Jetson GPIO...")
-setgpio()
+#setgpio()
 
 logging.info("Opening camera...")
 for i in range(TIME):
     logging.info('Time left: {} secs'.format(TIME-i))
     time.sleep(1)
-cam=cv2.VideoCapture(gstreamer_pipeline(flip_method=6), cv2.CAP_GSTREAMER)
-#cam = cv2.VideoCapture(0)
+#cam=cv2.VideoCapture(gstreamer_pipeline(flip_method=6), cv2.CAP_GSTREAMER)
+cam = cv2.VideoCapture(0)
 fps = cam.get(cv2.CAP_PROP_FPS)
 if cam.isOpened():
     logging.info('Camera On...')
