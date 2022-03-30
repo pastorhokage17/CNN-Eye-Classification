@@ -81,10 +81,10 @@ def distance(a,b):
 
 def gstreamer_pipeline(
     capture_width=3264,
-    capture_height=2464,
+    capture_height=1848,
     display_width=820,
     display_height=616,
-    framerate=21,
+    framerate=28,
     flip_method=0,
 ):
     return (

@@ -6,7 +6,7 @@ import logging
 from ear_calculate import *
 from cnn import *
 import time
-BUFFER = 8
+BUFFER = 5
 TIME = 30
 
 def cnn_calculate(image, closed, counter,results):
@@ -37,7 +37,7 @@ def cnn_calculate(image, closed, counter,results):
     if counter == BUFFER-1: #if and only if buffer is full, then update state 
         if len(faces) == 0:
             state = "N/A"
-        elif closed >= 5:
+        elif closed >= 3: #60% OF BUFFER
             closed = 0
             state = "innatentive"
             ring()
