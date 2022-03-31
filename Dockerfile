@@ -37,11 +37,13 @@ ARG CMAKEFLAGS="\
 RUN mkdir -p ${PREFIX}
 WORKDIR ${PREFIX}
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN mv /etc/apt/sources.list.d/nvidia-l4t-apt-source.list /etc/apt/ &&\
+    apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates
 
 #install dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN mv /etc/apt/nvidia-l4t-apt-source.list /etc/apt/sources.list.d &&\
+    apt-get update && apt-get install -y --no-install-recommends \
         gosu \
         cuda-compiler-10-2 \
         cuda-minimal-build-10-2 \
