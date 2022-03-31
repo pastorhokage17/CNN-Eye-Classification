@@ -7,7 +7,8 @@
 #-------------------------#
 
 FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf1.15-py3
-ARG DEBIAN_FRONTEND=noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Tokyo
 ARG PREFIX="/usr/local"
 ARG BUILD_TMP="/tmp/build_opencv"
 ARG CMAKEFLAGS="\
@@ -37,66 +38,76 @@ ARG CMAKEFLAGS="\
 RUN mkdir -p ${PREFIX}
 WORKDIR ${PREFIX}
 
-RUN mv /etc/apt/sources.list.d/nvidia-l4t-apt-source.list /etc/apt/ &&\
-    apt-get update && apt-get install -y --no-install-recommends \
-        ca-certificates
+COPY build_opencv.sh /
 
-#install dependencies
-RUN mv /etc/apt/nvidia-l4t-apt-source.list /etc/apt/sources.list.d &&\
-    apt-get update && apt-get install -y --no-install-recommends \
-        gosu \
-        cuda-compiler-10-2 \
-        cuda-minimal-build-10-2 \
-        cuda-libraries-dev-10-2 \
-        libcudnn8-dev \
-        build-essential \
-        cmake \
-        git \
-        gfortran \
-        libatlas-base-dev \
-        libavcodec-dev \
-        libavformat-dev \
-        libavresample-dev \
-        libeigen3-dev \
-        libgstreamer-plugins-base1.0-dev \
-        libgstreamer-plugins-good1.0-dev \
-        libgstreamer1.0-dev \
-        libjpeg-dev \
-        libjpeg8-dev \
-        libjpeg-turbo8-dev \
-        liblapack-dev \
-        liblapacke-dev \
-        libopenblas-dev \
-        libpng-dev \
-        libpostproc-dev \
-        libswscale-dev \
-        libtbb-dev \
-        libtbb2 \
-        libtesseract-dev \
-        libtiff-dev \
-        libv4l-dev \
-        libx264-dev \
-        pkg-config \
-        python3-dev \
-        python3-numpy \
-        python3-pil \
-        python3-matplotlib \
-        v4l-utils \
-        zlib1g-dev
+RUN bash /build_opencv.sh
 
-#build opencv
-RUN adduser --system --group --no-create-home builder && \
-    mkdir ${BUILD_TMP} && cd ${BUILD_TMP} &&\
-    gosu builder git clone --depth 1 --branch 4.5.1 https://github.com/opencv/opencv.git &&\
-    gosu builder git clone --depth 1 --branch 4.5.1 https://github.com/opencv/opencv_contrib.git &&\
-    cd opencv &&\
-    mkdir build && chown builder:builder build &&\
-    cd build &&\
-    gosu builder cmake ${CMAKEFLAGS} .. &&\
-    gosu builder make -j1 &&\
-    make install
+COPY . . 
 
-CMD ["bin/bash"]
+CMD ["/bin/bash"]
+
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#         ca-certificates
+        
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#     gnupg &&\
+#     apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub &&\
+#     sh -c 'echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda.list'
+# #install dependencies
+# RUN apt-get update && apt-get install -y --no-install-recommends \
+#         gosu \
+#         cuda-compiler-10-2 \
+#         cuda-minimal-build-10-2 \
+#         cuda-libraries-dev-10-2 \
+#         libcudnn8-dev \
+#         build-essential \
+#         cmake \
+#         git \
+#         gfortran \
+#         libatlas-base-dev \
+#         libavcodec-dev \
+#         libavformat-dev \
+#         libavresample-dev \
+#         libeigen3-dev \
+#         libgstreamer-plugins-base1.0-dev \
+#         libgstreamer-plugins-good1.0-dev \
+#         libgstreamer1.0-dev \
+#         libjpeg-dev \
+#         libjpeg8-dev \
+#         libjpeg-turbo8-dev \
+#         liblapack-dev \
+#         liblapacke-dev \
+#         libopenblas-dev \
+#         libpng-dev \
+#         libpostproc-dev \
+#         libswscale-dev \
+#         libtbb-dev \
+#         libtbb2 \
+#         libtesseract-dev \
+#         libtiff-dev \
+#         libv4l-dev \
+#         libx264-dev \
+#         pkg-config \
+#         python3-dev \
+#         python3-numpy \
+#         python3-pil \
+#         python3-matplotlib \
+#         v4l-utils \
+#         zlib1g-dev
+
+# #build opencv
+# RUN adduser --system --group --no-create-home builder && \
+#     mkdir ${BUILD_TMP} && cd ${BUILD_TMP} &&\
+#     gosu builder git clone --depth 1 --branch 4.5.1 https://github.com/opencv/opencv.git &&\
+#     gosu builder git clone --depth 1 --branch 4.5.1 https://github.com/opencv/opencv_contrib.git &&\
+#     cd opencv &&\
+#     mkdir build && chown builder:builder build &&\
+#     cd build &&\
+#     gosu builder cmake ${CMAKEFLAGS} .. &&\
+#     gosu builder make -j1 &&\
+#     make install
+
+# CMD ["bin/bash"]
 #______________________________________________________#
 
 # FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf1.15-py3
