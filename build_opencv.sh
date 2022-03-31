@@ -1,3 +1,4 @@
+   
 #!/bin/bash
 # 2019 Michael de Gans
 
@@ -62,6 +63,7 @@ install_dependencies () {
     # open-cv has a lot of dependencies, but most can be found in the default
     # package repository or should already be installed (eg. CUDA).
     echo "Installing build dependencies."
+    # well, shit, they fixed it, so we do this to get the certs temporarily
     mv /etc/apt/sources.list.d/nvidia-l4t-apt-source.list /etc/apt/
     apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates
