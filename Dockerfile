@@ -43,7 +43,7 @@ COPY build_opencv.bash /
 
 RUN chmod 777 build_opencv.bash
 
-RUN PATH = $PATH:/
+RUN PATH=$PATH:/
 
 RUN bash /build_opencv.bash
 
