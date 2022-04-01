@@ -9,15 +9,18 @@
 # license agreement from NVIDIA Corporation is strictly prohibited.
 #
 
-version="4.5.0"
-folder="workspace"
+version="4.5.1"
+folder=${BUILD_TMP}
 
 echo "** Remove other OpenCV first"
 apt-get purge *libopencv*
 
 
-echo "** Install requirement"
+echo "** Get CA Certificate"
 apt-get update
+apt-get install ca-certificates
+
+echo "** Install dependencies"
 apt-get install -y build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev \
                    libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
                    python2.7-dev python3.6-dev python-dev python-numpy python3-numpy \
@@ -39,31 +42,8 @@ cd opencv-${version}/
 echo "** Building..."
 mkdir release
 cd release/
-cmake   -D BUILD_opencv_world=OFF\
-        -D CMAKE_LIBRARY_PATH=/usr/local/cuda/lib64/stubs\
-        -D OPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-4.5.1/modules\
-        -D BUILD_EXAMPLES=OFF\
-        -D BUILD_opencv_python2=ON\
-        -D BUILD_opencv_python3=ON\
-        -D CMAKE_BUILD_TYPE=RELEASE\
-        -D CMAKE_INSTALL_PREFIX=/usr/local\
-        -D WITH_CUDA=ON\
-        -D WITH_CUDNN=ON\
-        -D CUDNN_VERSION='8.0'\
-        -D OPENCV_DNN_CUDA=ON\
-        -D CUDA_ARCH_BIN=5.3,6.2,7.2\
-        -D CUDA_ARCH_PTX=\
-        -D CUDA_FAST_MATH=ON\
-        -D EIGEN_INCLUDE_PATH=/usr/include/eigen3 \
-        -D ENABLE_NEON=ON\
-        -D OPENCV_ENABLE_NONFREE=ON\
-        -D OPENCV_GENERATE_PKGCONFIG=ON\
-        -D WITH_CUBLAS=ON\
-        -D WITH_GSTREAMER=ON\
-        -D WITH_LIBV4L=ON\
-        -D WITH_OPENGL=ON\
-        ..
-make -j$(nproc)
+cmake  ${CMAKEFLAGS}
+make -j4
 make install
 
 

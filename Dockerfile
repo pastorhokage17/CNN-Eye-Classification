@@ -7,11 +7,13 @@
 #-------------------------#
 
 FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf1.15-py3
+
+ARG PREFIX="/usr/local"
+ARG BUILD_TMP_ARG="/tmp/build_opencv"
+ENV BUILD_TMP=${BUILD_TMP_ARG}
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Tokyo
-ARG PREFIX="/usr/local"
-ARG BUILD_TMP="/tmp/build_opencv"
-ARG CMAKEFLAGS="\
+ENV CMAKEFLAGS="\
         -D CMAKE_LIBRARY_PATH=/usr/local/cuda/lib64/stubs\
         -D BUILD_EXAMPLES=OFF\
         -D BUILD_opencv_python2=ON\
@@ -21,10 +23,9 @@ ARG CMAKEFLAGS="\
         -D CUDA_ARCH_BIN=5.3,6.2,7.2\
         -D CUDA_ARCH_PTX=\
         -D CUDA_FAST_MATH=ON\
-        -D EIGEN_INCLUDE_PATH=/usr/include/eigen3 \
         -D ENABLE_NEON=ON\
         -D OPENCV_ENABLE_NONFREE=ON\
-        -D OPENCV_EXTRA_MODULES_PATH=/tmp/build_opencv/opencv_contrib/modules\
+        -D OPENCV_EXTRA_MODULES_PATH=${BUILD_TMP_ARG}/opencv_contrib/modules\
         -D OPENCV_GENERATE_PKGCONFIG=ON\
         -D WITH_CUBLAS=ON\
         -D WITH_CUDA=ON\
@@ -33,14 +34,21 @@ ARG CMAKEFLAGS="\
         -D OPENCV_DNN_CUDA=ON\
         -D WITH_GSTREAMER=ON\
         -D WITH_LIBV4L=ON\
-        -D WITH_OPENGL=ON"
+        -D WITH_OPENGL=ON\
+        -D BUILD_PERF_TESTS=OFF\
+        -D BUILD_TESTS=OFF .."
+
+
+COPY build_opencv.bash /
+
+RUN chmod 777 build_opencv.bash
+
+RUN PATH = $PATH:/
+
+RUN bash /build_opencv.bash
 
 RUN mkdir -p ${PREFIX}
 WORKDIR ${PREFIX}
-
-COPY build_opencv.sh /
-
-RUN bash /build_opencv.sh
 
 COPY . . 
 
