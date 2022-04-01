@@ -39,71 +39,46 @@ ENV CMAKEFLAGS="\
         -D BUILD_TESTS=OFF .."
 
 
-COPY build_opencv.bash /
 
-RUN chmod 777 build_opencv.bash
+# RUN apt-get update && apt-get install ca-certificates
 
-RUN PATH=$PATH:/
 
-RUN bash /build_opencv.bash
+# RUN apt-get install -y build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev \
+#                    libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+#                    python2.7-dev python3.6-dev python-dev python-numpy python3-numpy \
+#                    libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev \
+#                    libv4l-dev v4l-utils qv4l2 v4l2ucp \
+#                    curl wget unzip
 
-RUN mkdir -p ${PREFIX}
-WORKDIR ${PREFIX}
 
-COPY . . 
+# COPY build_opencv.bash /
 
-CMD ["/bin/bash"]
+# RUN chmod 777 build_opencv.bash
 
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#         ca-certificates
-        
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#     gnupg &&\
-#     apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub &&\
-#     sh -c 'echo "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64 /" > /etc/apt/sources.list.d/cuda.list'
-# #install dependencies
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#         gosu \
-#         cuda-compiler-10-2 \
-#         cuda-minimal-build-10-2 \
-#         cuda-libraries-dev-10-2 \
-#         libcudnn8-dev \
-#         build-essential \
-#         cmake \
-#         git \
-#         gfortran \
-#         libatlas-base-dev \
-#         libavcodec-dev \
-#         libavformat-dev \
-#         libavresample-dev \
-#         libeigen3-dev \
-#         libgstreamer-plugins-base1.0-dev \
-#         libgstreamer-plugins-good1.0-dev \
-#         libgstreamer1.0-dev \
-#         libjpeg-dev \
-#         libjpeg8-dev \
-#         libjpeg-turbo8-dev \
-#         liblapack-dev \
-#         liblapacke-dev \
-#         libopenblas-dev \
-#         libpng-dev \
-#         libpostproc-dev \
-#         libswscale-dev \
-#         libtbb-dev \
-#         libtbb2 \
-#         libtesseract-dev \
-#         libtiff-dev \
-#         libv4l-dev \
-#         libx264-dev \
-#         pkg-config \
-#         python3-dev \
-#         python3-numpy \
-#         python3-pil \
-#         python3-matplotlib \
-#         v4l-utils \
-#         zlib1g-dev
+# RUN PATH=$PATH:/
 
-# #build opencv
+# RUN bash build_opencv.bash
+
+# RUN mkdir -p ${PREFIX}
+# WORKDIR ${PREFIX}
+
+# COPY . . 
+
+# CMD ["/bin/bash"]
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        ca-certificates
+ 
+# COPY build_dep.bash .
+# RUN chmod 777 build_dep.bash &&\
+#     PATH=/usr/local/cuda/bin:$PATH &&\
+#     bash build_dep.bash
+
+#build opencv
+COPY build_cv2.bash /
+RUN chmod 777 build_cv2.bash &&\
+    PATH=$PATH:/ &&\
+    bash build_cv2.bash
 # RUN adduser --system --group --no-create-home builder && \
 #     mkdir ${BUILD_TMP} && cd ${BUILD_TMP} &&\
 #     gosu builder git clone --depth 1 --branch 4.5.1 https://github.com/opencv/opencv.git &&\
@@ -111,11 +86,11 @@ CMD ["/bin/bash"]
 #     cd opencv &&\
 #     mkdir build && chown builder:builder build &&\
 #     cd build &&\
-#     gosu builder cmake ${CMAKEFLAGS} .. &&\
-#     gosu builder make -j1 &&\
+#     gosu builder cmake ${CMAKEFLAGS} &&\
+#     gosu builder make -j4 &&\
 #     make install
 
-# CMD ["bin/bash"]
+CMD ["bin/bash"]
 #______________________________________________________#
 
 # FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf1.15-py3

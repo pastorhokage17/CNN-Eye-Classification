@@ -9,25 +9,11 @@
 # license agreement from NVIDIA Corporation is strictly prohibited.
 #
 
-version="4.5.1"
+version=4.5.1
 folder=${BUILD_TMP}
 
 echo "** Remove other OpenCV first"
 apt-get purge *libopencv*
-
-
-echo "** Get CA Certificate"
-apt-get update
-apt-get install ca-certificates
-
-echo "** Install dependencies"
-apt-get install -y build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev \
-                   libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
-                   python2.7-dev python3.6-dev python-dev python-numpy python3-numpy \
-                   libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev \
-                   libv4l-dev v4l-utils qv4l2 v4l2ucp \
-                   curl wget unzip
-
 
 echo "** Download opencv-"${version}
 mkdir $folder
