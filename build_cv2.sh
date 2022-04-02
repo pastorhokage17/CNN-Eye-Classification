@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 echo "CREATING new builder user to build opencv"
 adduser --system --group --no-create-home builder
 if [[ -d ${BUILD_TMP} ]] ; then

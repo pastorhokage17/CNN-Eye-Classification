@@ -75,10 +75,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 #     bash build_dep.bash
 
 #build opencv
-COPY build_cv2.bash /
-RUN chmod 777 build_cv2.bash &&\
+COPY build_cv2.sh /
+RUN chmod 777 build_cv2.sh &&\
     PATH=$PATH:/ &&\
-    bash build_cv2.bash
+    sh build_cv2.sh
 # RUN adduser --system --group --no-create-home builder && \
 #     mkdir ${BUILD_TMP} && cd ${BUILD_TMP} &&\
 #     gosu builder git clone --depth 1 --branch 4.5.1 https://github.com/opencv/opencv.git &&\
@@ -90,7 +90,12 @@ RUN chmod 777 build_cv2.bash &&\
 #     gosu builder make -j4 &&\
 #     make install
 
-CMD ["bin/bash"]
+RUN mkdir -p ${PREFIX}
+WORKDIR ${PREFIX}
+
+COPY . . 
+
+CMD ["/bin/bash"]
 #______________________________________________________#
 
 # FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf1.15-py3
