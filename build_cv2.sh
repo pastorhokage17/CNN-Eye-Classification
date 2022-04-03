@@ -1,10 +1,6 @@
 #!/bin/sh
 echo "CREATING new builder user to build opencv"
 adduser --system --group --no-create-home builder
-if [[ -d ${BUILD_TMP} ]] ; then
-echo "WARNING: It appears an existing build exists in /tmp/build_opencv"
-cleanup
-fi
 mkdir -p ${BUILD_TMP} && chown builder:builder ${BUILD_TMP}
 echo "CREATING symlink to /usr/local/cuda"
 ln -s /usr/local/cuda-10.0 /usr/local/cuda

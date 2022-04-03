@@ -1,4 +1,4 @@
-#-------------------------#
+#-------------------------# 
 # MAPUA UNIVERSITY 
 # CNN-Eye-Classification 
 # 03/31/2022
@@ -79,21 +79,23 @@ COPY build_cv2.sh /
 RUN chmod 777 build_cv2.sh &&\
     PATH=$PATH:/ &&\
     sh build_cv2.sh
-# RUN adduser --system --group --no-create-home builder && \
-#     mkdir ${BUILD_TMP} && cd ${BUILD_TMP} &&\
-#     gosu builder git clone --depth 1 --branch 4.5.1 https://github.com/opencv/opencv.git &&\
-#     gosu builder git clone --depth 1 --branch 4.5.1 https://github.com/opencv/opencv_contrib.git &&\
-#     cd opencv &&\
-#     mkdir build && chown builder:builder build &&\
-#     cd build &&\
-#     gosu builder cmake ${CMAKEFLAGS} &&\
-#     gosu builder make -j4 &&\
-#     make install
 
-RUN mkdir -p ${PREFIX}
-WORKDIR ${PREFIX}
+# RUN pip3 install --no-cache-dir --upgrade pip \
+#     && pip3 --no-cache-dir install Jetson.GPIO 
 
-COPY . . 
+# RUN pip3 install wget \
+#     && apt-get install wget gnupg \
+#     && wget -qO - https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub | apt-key add - \
+#     && apt-get update && apt-get install -y unzip \
+#     && wget https://github.com/davisking/dlib/archive/refs/tags/v19.22.zip \
+#     && unzip v19.22 \
+#     && cd dlib-19.22 \
+#     && python3 setup.py install --user
+
+# RUN mkdir -p ${PREFIX}
+# WORKDIR ${PREFIX}
+
+# COPY . . 
 
 CMD ["/bin/bash"]
 #______________________________________________________#
