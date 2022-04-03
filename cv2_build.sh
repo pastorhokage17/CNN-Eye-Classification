@@ -165,7 +165,7 @@ main () {
     # prepare for the build:
     setup
     install_dependencies
-    git_source ${OPENCV_VERSION}
+    git_source 4.5.1
 
     # configure the build
     configure
@@ -183,4 +183,4 @@ main () {
     cleanup
 }
 
-main "$@"
+main
