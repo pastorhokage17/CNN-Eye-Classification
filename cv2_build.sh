@@ -1,5 +1,3 @@
-ble File  184 lines (161 sloc)  5.13 KB
-   
 #!/bin/bash
 # 2019 Michael de Gans
 
@@ -171,7 +169,7 @@ main () {
     configure
 
     # start the build
-    gosu builder make -j${OPENCV_BUILD_JOBS}
+    gosu builder make -j4
 
     if [[ ${OPENCV_DO_TEST} == "TRUE" ]] ; then
         echo "MAKING tests"
