@@ -8,43 +8,44 @@
 
 FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf1.15-py3
 
-ARG PREFIX="/usr/local"
-ARG BUILD_TMP_ARG="/tmp/build_opencv"
-ENV BUILD_TMP=${BUILD_TMP_ARG}
+# ARG PREFIX="/usr/local"
+# ARG BUILD_TMP_ARG="/tmp/build_opencv"
+# ENV BUILD_TMP=${BUILD_TMP_ARG}
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Tokyo
-ENV CMAKEFLAGS="\
-        -D CMAKE_LIBRARY_PATH=/usr/local/cuda/lib64/stubs\
-        -D BUILD_EXAMPLES=OFF\
-        -D BUILD_opencv_python2=ON\
-        -D BUILD_opencv_python3=ON\
-        -D CMAKE_BUILD_TYPE=RELEASE\
-        -D CMAKE_INSTALL_PREFIX=${PREFIX}\
-        -D CUDA_ARCH_BIN=5.3,6.2,7.2\
-        -D CUDA_ARCH_PTX=\
-        -D CUDA_FAST_MATH=ON\
-        -D ENABLE_NEON=ON\
-        -D OPENCV_ENABLE_NONFREE=ON\
-        -D OPENCV_EXTRA_MODULES_PATH=${BUILD_TMP_ARG}/opencv_contrib/modules\
-        -D OPENCV_GENERATE_PKGCONFIG=ON\
-        -D WITH_CUBLAS=ON\
-        -D WITH_CUDA=ON\
-        -D WITH_CUDNN=ON\
-        -D CUDNN_VERSION='8.0'\
-        -D OPENCV_DNN_CUDA=ON\
-        -D WITH_GSTREAMER=ON\
-        -D WITH_LIBV4L=ON\
-        -D WITH_OPENGL=ON\
-        -D BUILD_PERF_TESTS=OFF\
-        -D BUILD_TESTS=OFF"
+ENV OPENCV_DO_TEST="TRUE"
+# ENV CMAKEFLAGS="\
+#         -D CMAKE_LIBRARY_PATH=/usr/local/cuda/lib64/stubs\
+#         -D BUILD_EXAMPLES=OFF\
+#         -D BUILD_opencv_python2=ON\
+#         -D BUILD_opencv_python3=ON\
+#         -D CMAKE_BUILD_TYPE=RELEASE\
+#         -D CMAKE_INSTALL_PREFIX=${PREFIX}\
+#         -D CUDA_ARCH_BIN=5.3,6.2,7.2\
+#         -D CUDA_ARCH_PTX=\
+#         -D CUDA_FAST_MATH=ON\
+#         -D ENABLE_NEON=ON\
+#         -D OPENCV_ENABLE_NONFREE=ON\
+#         -D OPENCV_EXTRA_MODULES_PATH=${BUILD_TMP_ARG}/opencv_contrib/modules\
+#         -D OPENCV_GENERATE_PKGCONFIG=ON\
+#         -D WITH_CUBLAS=ON\
+#         -D WITH_CUDA=ON\
+#         -D WITH_CUDNN=ON\
+#         -D CUDNN_VERSION='8.0'\
+#         -D OPENCV_DNN_CUDA=ON\
+#         -D WITH_GSTREAMER=ON\
+#         -D WITH_LIBV4L=ON\
+#         -D WITH_OPENGL=ON\
+#         -D BUILD_PERF_TESTS=OFF\
+#         -D BUILD_TESTS=OFF"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates
 #build opencv
-COPY build_cv2.sh /
-RUN chmod 777 build_cv2.sh &&\
+COPY cv2_build.sh /
+RUN chmod 777 cv2_build.sh &&\
     PATH=$PATH:/
-RUN sh build_cv2.sh
+RUN sh cv2_build.sh
 
 RUN pip3 install --no-cache-dir --upgrade pip \
     && pip3 --no-cache-dir install Jetson.GPIO 
