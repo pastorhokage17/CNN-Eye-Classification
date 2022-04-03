@@ -42,10 +42,10 @@ ENV OPENCV_DO_TEST="TRUE"
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates
 #build opencv
-COPY cv2_build.sh /
-RUN chmod 777 cv2_build.sh &&\
-    PATH=$PATH:/
-RUN sh cv2_build.sh
+COPY cv2_build.sh .
+# RUN chmod 777 cv2_build.sh &&\
+#     PATH=$PATH:/
+RUN /bin/bash cv2_build.sh
 
 RUN pip3 install --no-cache-dir --upgrade pip \
     && pip3 --no-cache-dir install Jetson.GPIO 
