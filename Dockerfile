@@ -36,61 +36,18 @@ ENV CMAKEFLAGS="\
         -D WITH_LIBV4L=ON\
         -D WITH_OPENGL=ON\
         -D BUILD_PERF_TESTS=OFF\
-        -D BUILD_TESTS=OFF .."
-
-
-
-# RUN apt-get update && apt-get install ca-certificates
-
-
-# RUN apt-get install -y build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev \
-#                    libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
-#                    python2.7-dev python3.6-dev python-dev python-numpy python3-numpy \
-#                    libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev \
-#                    libv4l-dev v4l-utils qv4l2 v4l2ucp \
-#                    curl wget unzip
-
-
-# COPY build_opencv.bash /
-
-# RUN chmod 777 build_opencv.bash
-
-# RUN PATH=$PATH:/
-
-# RUN bash build_opencv.bash
-
-# RUN mkdir -p ${PREFIX}
-# WORKDIR ${PREFIX}
-
-# COPY . . 
-
-# CMD ["/bin/bash"]
+        -D BUILD_TESTS=OFF"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates
- 
-# COPY build_dep.bash .
-# RUN chmod 777 build_dep.bash &&\
-#     PATH=/usr/local/cuda/bin:$PATH &&\
-#     bash build_dep.bash
-
 #build opencv
 COPY build_cv2.sh /
 RUN chmod 777 build_cv2.sh &&\
-    PATH=$PATH:/ &&\
-    sh build_cv2.sh
+    PATH=$PATH:/
+RUN sh build_cv2.sh
 
-# RUN pip3 install --no-cache-dir --upgrade pip \
-#     && pip3 --no-cache-dir install Jetson.GPIO 
-
-# RUN pip3 install wget \
-#     && apt-get install wget gnupg \
-#     && wget -qO - https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub | apt-key add - \
-#     && apt-get update && apt-get install -y unzip \
-#     && wget https://github.com/davisking/dlib/archive/refs/tags/v19.22.zip \
-#     && unzip v19.22 \
-#     && cd dlib-19.22 \
-#     && python3 setup.py install --user
+RUN pip3 install --no-cache-dir --upgrade pip \
+    && pip3 --no-cache-dir install Jetson.GPIO 
 
 # RUN mkdir -p ${PREFIX}
 # WORKDIR ${PREFIX}

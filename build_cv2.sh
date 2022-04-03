@@ -58,8 +58,14 @@ python3-matplotlib \
 v4l-utils \
 zlib1g-dev
 
-echo '** Install Dependencies complete. Returning to home dir'
+echo '** Install Dependencies complete.'
 
+echo '** Installing dlib.'
+
+wget https://github.com/davisking/dlib/archive/refs/tags/v19.22.zip 
+unzip v19.22 
+cd dlib-19.22 
+python3 setup.py install
 
 
 cd ${BUILD_TMP}
@@ -77,6 +83,16 @@ make install
 
 echo "REMOVING apt cache and lists"
 apt-get clean
+apt-get purge -y --autoremove \
+        gosu \
+        build-essential \
+        ca-certificates \
+        cmake \
+        git \
+        cuda-compiler-10-2 \
+        cuda-minimal-build-10-2 \
+        cuda-libraries-dev-10-2 \
+        libcudnn8-dev \
 rm -rf /var/lib/apt/lists/*
 
 echo "REMOVING builder user and any owned files"
