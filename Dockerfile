@@ -31,7 +31,7 @@ ENV OPENCV_DO_TEST="TRUE"
 #         -D WITH_CUBLAS=ON\
 #         -D WITH_CUDA=ON\
 #         -D WITH_CUDNN=ON\
-#         -D CUDNN_VERSION='8.0'\
+#         -D CUDNN_VERSION='8.0'\ 
 #         -D OPENCV_DNN_CUDA=ON\
 #         -D WITH_GSTREAMER=ON\
 #         -D WITH_LIBV4L=ON\
@@ -39,13 +39,19 @@ ENV OPENCV_DO_TEST="TRUE"
 #         -D BUILD_PERF_TESTS=OFF\
 #         -D BUILD_TESTS=OFF"
 
+# docker buildx create --use --name larger_log --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=50000000
+# docker buildx build --progress plain .
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
         ca-certificates
 #build opencv
 COPY cv2_build.sh .
 # RUN chmod 777 cv2_build.sh &&\
 #     PATH=$PATH:/
-RUN /bin/bash cv2_build.sh
+
+RUN sed -i 's/\r//' cv2_build.sh 
+
+RUN sh cv2_build.sh
 
 RUN pip3 install --no-cache-dir --upgrade pip \
     && pip3 --no-cache-dir install Jetson.GPIO 

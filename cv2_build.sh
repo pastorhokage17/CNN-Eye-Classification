@@ -63,7 +63,7 @@ install_dependencies () {
     # package repository or should already be installed (eg. CUDA).
     echo "Installing build dependencies."
     # well, shit, they fixed it, so we do this to get the certs temporarily
-    apt-get install wget gnupg
+    apt-get install -y wget gnupg
     wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/sbsa/cuda-ubuntu1804.pin 
     mv cuda-ubuntu1804.pin /etc/apt/preferences.d/cuda-repository-pin-600
     wget http://developer.download.nvidia.com/compute/cuda/11.0.2/local_installers/cuda-repo-ubuntu1804-11-0-local_11.0.2-450.51.05-1_arm64.deb
