@@ -13,7 +13,7 @@ FROM nvcr.io/nvidia/l4t-tensorflow:r32.6.1-tf1.15-py3
 # ENV BUILD_TMP=${BUILD_TMP_ARG}
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Tokyo
-ENV OPENCV_DO_TEST="TRUE"
+ENV OPENCV_DO_TEST="FALSE"
 # ENV CMAKEFLAGS="\
 #         -D CMAKE_LIBRARY_PATH=/usr/local/cuda/lib64/stubs\
 #         -D BUILD_EXAMPLES=OFF\
